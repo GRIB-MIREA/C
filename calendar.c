@@ -1,98 +1,59 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-int isVis(int);
-int main(int argc, char *argv[])
-
+int main ()
 {
-    int months[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    int dd, mm, yy, i, sum, dw;
-    dw = 1;
-    if(argc < 4)
-    {
-     printf("argc < 4\n");
-     exit(-1);
-    }
-     dd = atoi(argv[1]);
-     mm = atoi(argv[2]);
-     yy = atoi(argv[3]);
-     for(i = 1; i < yy; i++)
-    {
-    if(i % 400 == 0)
-       dw += 2;
+    int d,m,y,res,vis;
+    printf("Enter the date: xx xx xxxx\n");
+    scanf("%i %i %i", &d,&m,&y);
+    printf("You entered:%i.%i.%i", d,m,y);
+    vis = 0;
 
-		else if(i % 100 == 0)
-            dw ++;
+    if( y % 4 == 0 || y % 400 == 0 ) 
+        vis = 1;
 
-		else if(i % 4 == 0)
-            dw += 2;
-        else
-            dw ++;
-
-			if(dw > 7) dw -= 7;
-    }
-
-	dw --;
-    if(dw == 0) dw = 7;
-    for(i = 0; i < mm - 1; i ++)
-    {
-    if(i == 1 && (isVis(yy) & 1))
-
-		{
-        dw++;
-        continue;
-
-		}
-
-		else if(i == 1)
-           continue;
-        dw += months[i] - (months[i] / 7) * 7;
-
-		if(dw > 7) dw -= 7;
-
-	}
-    if(dw > 7) dw -= 7;
-    switch(dw)
-
+	switch (m) /* Index of month*/
 	{
-
-		case 1: printf("monday\n");
+	case 3:
+	case 11:
+	case 2: 
+	{
+		if (vis == 1 && m == 2 )
+        	m = 0;
+        else m = 1;	
 		break;
-
-		case 2: printf("tuesday\n");
+	}
+	case 6: m = 2; break;
+	case 9:
+	case 12: m = 3; break;
+	case 4:
+	case 7: m = 4; break;
+	case 10:
+	case 1:
+	{
+		if (m == 1 || vis == 1)
+			m = 4;
+		else m = 5;	
 		break;
+	}
+	case 5: m = 6; break;
+	case 8: m = 0; break; 	
+	}
+        
+	y = (int)(y*1.25)%7; /* Index of year*/
+    res = (d+m+y)%7;
+    printf("\nDay num_ %i\n", res);
 
-		case 3: printf("wednesday\n");
-		break;
-
-		case 4: printf("thursday\n");
-		break;
-
-		case 5: printf("friday\n");
-		break;
-
-		case 6: printf("saturday\n");
-		break;
-
-		case 7: printf("sunday\n");
-		break;
+    switch (res)
+    {
+    case 6: printf("Saturday");  break;
+    case 7: printf("Sunday");	 break;
+    case 1: printf("Monday");    break;
+    case 2: printf("Tuesday"); 	 break;
+    case 3: printf("Wednesday"); break;
+    case 4: printf("Thursday");  break;
+    case 5: printf("Friday");    break;
     }
-        return 0;
 
-}
-int isVis(int year)
-
-{
-     if(year % 400 == 0)
-       return 1;
-
-	else if(year % 100 == 0)
-        return 0;
-
-	else if(year % 4 == 0)
-        return 1;
-
-	else
-        return 0;
-
+    return 0;
 }
